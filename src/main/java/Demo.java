@@ -50,6 +50,8 @@ public class Demo {
         String[] argLvl1 = {"+", "-", "*", "/", "%", "++", "--", "==", "!=", ">", "<", ">=", "<=", "&&", "||", "!", "|",
                 "^", "~", ">>", "<<", ">>>", "<<<", "+=", "-=", "*=", "/=", "=", ">>>=", "|=", "&=", "%=", "<<=", ">>=", "^=",
         };
+        String[] argLvl2 = {"++", "--",};
+
         ArrayList<String> tokens = new ArrayList();
 
         List<String> Lvl1Args = Arrays.asList(argLvl1);
