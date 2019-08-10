@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class Demo {
@@ -9,7 +7,7 @@ public class Demo {
 
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("Enter the Code Here! \n Enter \"--run-complex--\" to calculate complexity");
+        System.out.println("Enter the Code Here!");
 
         ArrayList<String> code = new ArrayList<>();
         ArrayList<String> tokens;
@@ -24,10 +22,11 @@ public class Demo {
             if (!lineContent.isEmpty()) {
                 code.add(lineContent);
 
+                System.out.println("test::test".contains("::"));
                 System.out.println("------------------------------------------------------------------------");
-                System.out.println(line++ + " " + lineContent);
+                System.out.println(line++ + " " + lineContent.trim());
 
-                tokens = Demo.complexityDueToize(lineContent);
+                tokens = Demo.complexityDueToSize(lineContent);
 
                 System.out.print("\n ~~~~~~~~~~~~~ Cs : " + tokens.get(0) + " ~~~~~~~~~~~~~~~~~~~~ Tokens :");
 
@@ -43,24 +42,38 @@ public class Demo {
 
     }
 
-    public static ArrayList complexityDueToize(String statement) {
+    private static ArrayList complexityDueToSize(String statement) {
 
         int complexity = 0;
         String[] words = statement.split(" ");
-        String[] argLvl1 = {"+", "-", "*", "/", "%", "++", "--", "==", "!=", ">", "<", ">=", "<=", "&&", "||", "!", "|",
+
+        String[] args = {"+", "-", "*", "/", "%", "++", "--", "==", "!=", ">", "<", ">=", "<=", "&&", "||", "!", "|",
                 "^", "~", ">>", "<<", ">>>", "<<<", "+=", "-=", "*=", "/=", "=", ">>>=", "|=", "&=", "%=", "<<=", ">>=", "^=",
-        };
-        String[] argLvl2 = {"++", "--",};
+                ",", "->", ".", "::", "void", "double", "int", "float", "string", "printf",  "println", "count", "cin", "if", "for",
+                "while", "do-while", "switch", "case", "String", "Class", "method", "object", "variable", "class", "import",
+                "endl",  "\n", "\t"};
 
         ArrayList<String> tokens = new ArrayList();
 
-        List<String> Lvl1Args = Arrays.asList(argLvl1);
         tokens.add(0, Integer.toString(complexity));
         for (String word : words
         ) {
-            if (Lvl1Args.contains(word)){
-               tokens.add(word);
-               complexity++;
+
+            if (word.startsWith("\"") && word.endsWith("\"")){
+                if (!tokens.contains(word)) {
+                    tokens.add("\"" + word + "\"");
+                }
+                complexity++;
+                continue;
+            }
+            for (String arg: args
+                 ) {
+                if (word.contains(arg)){
+                    if (!tokens.contains(arg)) {
+                        tokens.add(arg);
+                    }
+                    complexity++;
+                }
             }
         }
 
