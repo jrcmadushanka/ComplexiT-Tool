@@ -11,7 +11,7 @@ public class Demo {
 
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("Enter the Code Here!");
+        System.out.println("Enter the Code Here");
 
         ArrayList<String> code = new ArrayList<>();
         ArrayList<String> tokens;
@@ -56,13 +56,13 @@ public class Demo {
         String[] strings = statement.split("\"");
 
         String[] args = {"- ", "*", "/ ", "% ", "++", "--", "== ", "!=", " > ", " < ", ">=", "<=", "&&", "||", "!", "| ",
-                "^ ", "~ ", ">> ", "<< ", ">>>", "<<<", "+=", "-=", "*=", "/=", "= ", ">>>=", "|=", "&=", "%=", "<<=", ">>=", "^=",
-                ",", "->", "::", "void ", "double ", "int ", "float ", "string ", "printf",  "println", "count",
+                "^ ", " ~ ", ">> ", "<< ", ">>>", "<<<", "+=", "-=", "*=", "/=", "= ", ">>>=", "|=", "&=", "%=", "<<=", ">>=", "^=",
+                ",", "->", "::", "void ", "double ", "int ", "float ", "string ", "printf","print(",  "println", "count",
                 " cin", "if ", "if(", "for ","while ", "do-while","do{","do {", "switch ","switch (", "case ",
-                "String", "Class", "method", "object", "variable", "class", "import","default:","default ", "endl",  "\\n", "\\t"};
-        String[] argLevel2 = {".", "+"};
+                "String ", "Class", "method", "object", "variable", "class", "import","default:","default ", "endl",  "\\n",
+                "\\t", "[]"};
 
-        List<String> level2Args = Arrays.asList(argLevel2);
+        String[] argLevel2 = {"new", "delete", "throw", "throws" };
 
         ArrayList<String> tokens = new ArrayList();
 
@@ -70,6 +70,9 @@ public class Demo {
 
         for (String word : words
         ) {
+            boolean numeric = true;
+            Double num = 0.0;
+
             if (word.startsWith("\"") && word.endsWith("\"")){
                 continue;
             }
@@ -80,40 +83,68 @@ public class Demo {
                  ) {
                 if (word.contains(arg)){
 
-                   // if (!tokens.contains(arg)) {
+                    if (!tokens.contains(arg)) {
                         tokens.add(arg);
-                        if(!level2Args.contains(word.trim())){
-                            wordList.remove(word.trim());
-                            wordList.add(word.trim().replace(arg,""));
-                            System.out.println(word.trim());
-                            System.out.println(wordList.indexOf(arg.trim()));
-                            System.out.println(wordList.get(wordList.indexOf(word.trim())));
-                        }
-                   // }
+                    }
                     complexity++;
                 }
+            }
+
+            for (String arg: argLevel2
+                 ) {
+                if (word.contains(arg)){
+
+                    if (!tokens.contains(arg)) {
+                        tokens.add(arg);
+                    }
+                    complexity += 2;
+                }
+            }
+
+            try {
+                num = Double.parseDouble(word);
+            } catch (NumberFormatException e) {
+                numeric = false;
+            }
+            if(numeric){
+                if (!tokens.contains(Double.toString(num))) {
+                    tokens.add(Double.toString(num));
+                }
+                complexity++;
             }
 
         }
 
         for (String word: wordList
              ) {
-            System.out.println(word);
             for (int i = 0; i < word.length() ; i++) {
 
                 if (String.valueOf(word.charAt(i)).equals(".")) {
 
-                    // if (!tokens.contains(".")) {
+                     if (!tokens.contains(".")) {
                     tokens.add(".");
-                    //  }
+                      }
                     complexity++;
                 }
                 if (String.valueOf(word.charAt(i)).equals("+")) {
 
-                    // if (!tokens.contains(".")) {
-                    tokens.add("+");
-                    //  }
-                    complexity++;
+                    if ((i - 1) >= 0){
+                        if (String.valueOf(word.charAt(i - 1)).equals("+")) {
+                            continue;
+                        }
+                    }
+                    else if ((i + 1) < word.length()){
+                        if (String.valueOf(word.charAt(i + 1)).equals("+")) {
+                            continue;
+                        }
+                    }
+                    else {
+                         if (!tokens.contains(".")) {
+
+                        tokens.add("+");
+                          }
+                        complexity++;
+                    }
                 }
             }
         }
