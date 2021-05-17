@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class Demo {
@@ -9,7 +7,9 @@ public class Demo {
 
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("Enter the Code Here! \n Enter \"--run-complex--\" to calculate complexity");
+        ComplexitySize cs = new ComplexitySize();
+
+        System.out.println("Enter the Code Here");
 
         ArrayList<String> code = new ArrayList<>();
         ArrayList<String> tokens;
@@ -17,17 +17,17 @@ public class Demo {
         int line = 0;
         String lineContent = "";
 
-        while (true) {
+        while (scan.hasNext()) {
 
             lineContent = scan.nextLine();
 
             if (!lineContent.isEmpty()) {
                 code.add(lineContent);
 
-                System.out.println("------------------------------------------------------------------------");
-                System.out.println(line++ + " " + lineContent);
+                System.out.println( "===========================================================================" );
+                System.out.println(line++ + " " + lineContent.trim()); //8
 
-                tokens = Demo.complexityDueToize(lineContent);
+                tokens = cs.complexityDueToSize(lineContent);
 
                 System.out.print("\n ~~~~~~~~~~~~~ Cs : " + tokens.get(0) + " ~~~~~~~~~~~~~~~~~~~~ Tokens :");
 
@@ -41,32 +41,9 @@ public class Demo {
             }
         }
 
+        scan.close();
+
     }
 
-    public static ArrayList complexityDueToize(String statement) {
-
-        int complexity = 0;
-        String[] words = statement.split(" ");
-        String[] argLvl1 = {"+", "-", "*", "/", "%", "++", "--", "==", "!=", ">", "<", ">=", "<=", "&&", "||", "!", "|",
-                "^", "~", ">>", "<<", ">>>", "<<<", "+=", "-=", "*=", "/=", "=", ">>>=", "|=", "&=", "%=", "<<=", ">>=", "^=",
-        };
-        String[] argLvl2 = {"++", "--",};
-
-        ArrayList<String> tokens = new ArrayList();
-
-        List<String> Lvl1Args = Arrays.asList(argLvl1);
-        tokens.add(0, Integer.toString(complexity));
-        for (String word : words
-        ) {
-            if (Lvl1Args.contains(word)){
-               tokens.add(word);
-               complexity++;
-            }
-        }
-
-        tokens.set(0, Integer.toString(complexity));
-
-        return tokens;
-    }
 }
 
